@@ -1,0 +1,479 @@
+{
+	"Default Manifest": {
+		"prefix": "defaultManifest",
+		"body": [
+			"fx_version \"cerulean\"",
+			"game \"gta5\"",
+			"",
+			"shared_script \"@vrp/lib/Utils.lua\"",
+			"",
+			"client_scripts {",
+			"\t\"src/client.lua\"",
+			"}",
+			"",
+			"server_scripts {",
+			"\t\"src/server.lua\",",
+			"}"
+		],
+		"description": "Default Manifest"
+	},
+	"Default Manifest w/ NUI": {
+		"prefix": "defaultManifestNUI",
+		"body": [
+			"fx_version \"cerulean\"",
+			"game \"gta5\"",
+			"",
+			"files {",
+			"\t\"src/nui/**\",",
+			"}",
+			"",
+			"ui_page \"src/nui/index.html\"",
+			"",
+			"",
+			"shared_script \"@vrp/lib/Utils.lua\"",
+			"",
+			"client_scripts {",
+			"\t\"src/client.lua\"",
+			"}",
+			"",
+			"server_scripts {",
+			"\t\"src/server.lua\",",
+			"}"
+		],
+		"description": "Default Manifest w/ NUI"
+	},
+
+
+	"Default Client Template #01": {
+		"prefix": "defaultClient1",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"",
+			"vSERVER = Tunnel.getInterface(GetCurrentResourceName())"
+		],
+		"description": "Default vrp client script template"
+	},
+	"Default Client Template #02": {
+		"prefix": "defaultClient2",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"",
+			"src = {}",
+			"Tunnel.bindInterface(GetCurrentResourceName(), src)",
+			"vSERVER = Tunnel.getInterface(GetCurrentResourceName())"
+		],
+		"description": "Default vrp client script template (client tunnel)"
+	},
+
+	"Default Server Template #01": {
+		"prefix": "defaultServer1",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"vRPclient = Tunnel.getInterface(\"vRP\")",
+			"",
+			"src = {}",
+			"Tunnel.bindInterface(GetCurrentResourceName(), src)"
+		],
+		"description": "Default vrp server script template"
+	},
+	"Default Server Template #02": {
+		"prefix": "defaultServer2",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"vRPclient = Tunnel.getInterface(\"vRP\")",
+			"",
+			"src = {}",
+			"Tunnel.bindInterface(GetCurrentResourceName(), src)",
+			"vCLIENT = Tunnel.getInterface(GetCurrentResourceName())"
+		],
+		"description": "Default vrp server script template (client tunnel)"
+	},
+
+
+
+	"Get ID by source": {
+		"prefix": ["Passport", "getUserId"],
+		"body": [
+			"local Passport = vRP.Passport(source)"
+		],
+		"description": "Get and return user identifier"
+	},
+	"Get source by ID": {
+		"prefix": ["Source", "getUserSource"],
+		"body": [
+			"local OtherPlayer = vRP.Source(Passport)"
+		],
+		"description": "Get and return user source"
+	},
+	"getUserIdentity": {
+		"prefix": ["Identity", "getUserIdentity"],
+		"body": [
+			"vRP.Identity(Passport)"
+		],
+		"description": "Get and return user identity (array)"
+	},
+
+	"getInventoryItemAmount": {
+		"prefix": ["ItemAmount", "getInventoryItemAmount"],
+		"body": [
+			"vRP.ItemAmount(Passport, \"${1:itemName}\")"
+		],
+		"description": "Get and return amount of an inventory item"
+	},
+	"giveInventoryItem":{
+		"prefix": ["GenerateItem", "giveInventoryItem"],
+		"body": [
+			"vRP.GenerateItem(Passport, \"${1:itemName}\", ${2:amount})"
+		]
+	},
+	"tryGetInventoryItem":{
+		"prefix": ["TakeItem", "tryGetInventoryItem"],
+		"body": [
+			"vRP.TakeItem(Passport, \"${1:itemName}\", ${2:amount})"
+		]
+	},
+
+	"giveMoney": {
+		"prefix": ["giveDollars", "giveMoney"],
+		"body": [
+			"vRP.GenerateItem(Passport, \"dollars\", ${1:amount})"
+		],
+		"description": "Give money to wallet"
+	},
+	"tryPayment": {
+		"prefix": ["PaymentBank", "tryPayment"],
+		"body": [
+			"vRP.PaymentBank(Passport, ${1:amount})"
+		],
+		"description": "try a payment (bank only)"
+	},
+	"tryFullPayment": {
+		"prefix": ["PaymentFull", "tryFullPayment"],
+		"body": [
+			"vRP.PaymentFull(Passport, ${1:amount})"
+		],
+		"description": "try full payment (wallet + bank to complete payment)"
+	},
+	"giveBankMoney": {
+		"prefix": ["GiveBank", "giveBankMoney"],
+		"body": [
+			"vRP.GiveBank(Passport, ${1:amount})"
+		],
+		"description": "Add money to player bank"
+	},
+	"removeBankMoney": {
+		"prefix": ["RemoveBank", "removeBankMoney"],
+		"body": [
+			"vRP.RemoveBank(Passport, ${1:amount})"
+		],
+		"description": "Remove money from player bank"
+	},
+	"getBankMoney": {
+		"prefix": ["GetBank", "getBankMoney"],
+		"body": [
+			"vRP.GetBank(Passport)"
+		],
+		"description": "Get bank money"
+	},
+
+	"Client Default Loop Thread": {
+		"prefix": "defaultThreadLoop",
+		"body": [
+			"Citizen.CreateThread(function()",
+			"\twhile true do",
+			"\t\tCitizen.Wait(${1:time})",
+			"\tend",
+			"end)"
+		],
+		"description": "Default Thread Client-Side Optimized"
+	},
+	"Client Default Optimized Thread": {
+		"prefix": "defaultThreadOptimized",
+		"body": [
+			"Citizen.CreateThread(function()",
+			"\twhile true do",
+			"\t\tlocal idle = ${1:defaultTime}",
+			"\t\tCitizen.Wait(idle)",
+			"\tend",
+			"end)"
+		],
+		"description": "Default Thread Client-Side Optimized"
+	},
+	"Client Default Thread": {
+		"prefix": "defaultThread",
+		"body": [
+			"Citizen.CreateThread(function()",
+			
+			
+			"end)"
+		],
+		"description": "Default Thread Client-Side"
+	},
+	"Default Client Command": {
+		"prefix": "defaultCommandC",
+		"body": [
+			"RegisterCommand(\"${1:commandName}\", function(_, args, rawCommand)", 
+			"\t${2:code}",
+			"end)"
+		],
+		"description": "Default Server Command"
+	},
+	"Default Server Command": {
+		"prefix": "defaultCommandS",
+		"body": [
+			"RegisterCommand(\"${1:commandName}\", function(source, args, rawCommand)", 
+			"\tlocal Passport = vRP.Passport(source)",
+			"\t",
+			"\t${2:code}",
+			"end)"
+		],
+		"description": "Default Server Command"
+	},
+
+	"Notify - Server-side": {
+		"prefix": "NotifyS",
+		"body": [
+			"TriggerClientEvent(\"Notify\",source,\"${1:type}\",\"${2:message}\")"
+		],
+		"description": "Trigger notifications server-side"
+	},
+	"Notify - Client-side": {
+		"prefix": "NotifyC",
+		"body": [
+			"TriggerEvent(\"Notify\",\"${1:type}\",\"${2:message}\")"
+		],
+		"description": "Trigger notifications client-side"
+	},
+
+
+	"WebhookFields": {
+		"prefix": "sendWebhook",
+		"body": [
+			"PerformHttpRequest(\"${1:url}\", function(err, text, headers) end, 'POST', json.encode({",
+			"\tembeds = {",
+			"\t\t{",
+			"\t\t\ttitle = \"Webhook Example\",",
+			"\t\t\tfields = {",
+			"\t\t\t\t{",
+			"\t\t\t\t\tname = \"Campo #01\",", 
+			"\t\t\t\t\tvalue = \"Valor do campo #01\"",
+			"\t\t\t\t},",
+			"\t\t\t\t{",
+			"\t\t\t\t\tname = \"Campo #02\",", 
+			"\t\t\t\t\tvalue = \"Valor do campo #02\"",
+			"\t\t\t\t},",
+			"\t\t\t},",
+			"\t\t\tfooter = {",
+			"\t\t\t\ttext = os.date('%d/%m/%Y | %H:%M:%S')",
+			"\t\t\t},", 
+			"\t\t\tcolor = 65280",
+			"\t\t}",
+			"\t}",
+			"}), {[\"Content-Type\"] = \"application/json\"})"
+		],
+		"description": "Event to show notifications on client"
+	},
+	"WebhookGreen": {
+		"prefix": "sendWebhookG",
+		"body": [
+			"PerformHttpRequest(\"${1:url}\", function(err, text, headers) end, \"POST\", json.encode({",
+			"\tembeds = {",
+			"\t\t{",
+			"\t\t\tdescription = \"\",",
+			"\t\t\tcolor = 3042892",
+			"\t\t}",
+			"\t}",
+			"}), {[\"Content-Type\"] = \"application/json\"})"
+		],
+		"description": "Send webhook to Discord - green colored"
+	},
+	"WebhookRed": {
+		"prefix": "sendWebhookR",
+		"body": [
+			"PerformHttpRequest(\"${1:url}\", function(err, text, headers) end, \"POST\", json.encode({",
+			"\tembeds = {",
+			"\t\t{",
+			"\t\t\tdescription = \"\",",
+			"\t\t\tcolor = 9317187",
+			"\t\t}",
+			"\t}",
+			"}), {[\"Content-Type\"] = \"application/json\"})"
+		],
+		"description": "Send webhook to Discord - red colored"
+	},
+
+	"Send prompt": {
+		"prefix": "prompt",
+		"body": [
+			"vKEYBOARD.keySingle(source, '${1:field}')"
+		],
+		"description": "Send prompt to source"
+	},
+	"Send request": {
+		"prefix": "request",
+		"body": [
+			"vRP.Request(source, \"${1:description}\", \"${2:confirmText}\", \"${3:denyText}\")"
+		],
+		"description": "Send request to source"
+	},
+
+	"Get user data table": {
+		"prefix": ["Datatable", "getUserDatatable"],
+		"body": [
+			"vRP.Datatable(Passport)"
+		],
+		"description": "Return user data table"
+	},
+	"Get users": {
+	"prefix": ["Players", "getUsers"],
+		"body": [
+			"vRP.Players()"
+		],
+		"description": "Return users on server table"
+	},
+	"Get user data": {
+		"prefix": ["GetPlayerData", "getUData"],
+		"body": [
+			"local result = vRP.Query(\"playerdata/GetData\", { Passport = ${1:Passport}, dkey = ${2:dkey})[1]"
+		],
+		"description": "Get user data (textual data)"
+	},
+	"Set user data": {
+		"prefix": ["SetPlayerData", "setUData"],
+		"body": [
+			"vRP.Query(\"playerdata/SetData\", { Passport = ${1:Passport}, dkey = ${2:dkey}, dvalue = ${3:dvalue})"
+		],
+		"description": "Set user data"
+	},
+	"Get user server data": {
+		"prefix": ["GetSrvData", "getSData"],
+		"body": [
+			"vRP.GetSrvData(\"${1:dataKey}\")"
+		],
+		"description": "Get user server data (textual data)"
+	},
+	"Set user server data": {
+		"prefix": ["SetSrvData", "setSData"],
+		"body": [
+			"vRP.SetSrvData(\"${1:dataKey}\", ${1:value})"
+		],
+		"description": "Set user server data"
+	},
+
+	"teleport": {
+		"prefix": "teleport",
+		"body": [
+			"SetEntityCoords(GetPlayerPed(source), ${1:x}, ${2:y}, ${3:z})"
+		],
+		"description": "teleport the player to the specified coordinates"
+	},
+	"getPosition": {
+		"prefix": "getPosition",
+		"body": [
+			"local coords = GetEntityCoords(GetPlayerPed(source))"
+		],
+		"description": "get the player position"
+	},
+	"getNearestPlayer": {
+		"prefix": "getNearestPlayer",
+		"body": [
+			"vRPC.ClosestPed(source, ${2:distance})"
+		],
+		"description": "get nearest player (in radius)"
+	},
+
+	"playAnim": {
+		"prefix": "playAnim",
+		"body": [
+			"vRPC.playAnim(source, seq, { dict, anim }, looping)"
+		],
+		"description": "play animation"
+	},
+	"stopAnim": {
+		"prefix": "stopAnim",
+		"body": [
+			"vRPC.stopAnim(source)"
+		],
+		"description": "stop animation"
+	},
+	"playSound": {
+		"prefix": "playSound",
+		"body": [
+			"vRP.PlaySound(source,dict,name)"
+		],
+		"description": "play sound"
+	},
+
+	"removeUserGroup": {
+		"prefix": "removeUserGroup",
+		"body": [
+			"vRP.removeUserGroup(Passport, \"${1:groupName}\")"
+		],
+		"description": "remove a group from a connected user"
+	},
+	"hasGroup": {
+		"prefix": "hasGroup",
+		"body": [
+			"vRP.HasGroup(Passport, \"${1:groupName}\", ${2:hierarchy})"
+		],
+		"description": "check if the user has a specific group"
+	},
+	"hasService": {
+		"prefix": "hasService",
+		"body": [
+			"vRP.HasService(Passport, \"${1:groupName}\", ${2:hierarchy})"
+		],
+		"description": "check if the user has a specific group"
+	},
+	"hasPermission": {
+		"prefix": "hasPermission",
+		"body": [
+			"vRP.HasPermission(Passport, \"${1:permission}\")"
+		],
+		"description": "check if the user has a specific permission"
+	},
+	"getUsersByPermission": {
+		"prefix": ["NumPermission", "getUsersByPermission"],
+		"body": [
+			"local Users, Total = vRP.NumPermission(\"${1:permission}\")"
+		],
+		"description": "return list of connected users by permission"
+	},
+
+	"upgradeHunger": {
+		"prefix": "upgradeHunger",
+		"body": [
+			"vRP.UpgradeHunger(Passport, ${1:amount})"
+		],
+		"description": "reduce hunger amount"
+	},
+	"upgradeThirst": {
+		"prefix": "upgradeThirst",
+		"body": [
+			"vRP.UpgradeThirst(Passport, ${1:amount})"
+		],
+		"description": "reduce thirst amount"
+	},
+	"downgradeHunger": {
+		"prefix": "downgradeHunger",
+		"body": [
+			"vRP.DowngradeHunger(Passport, ${1:amount})"
+		],
+		"description": "increase hunger amount"
+	},
+	"downgradeThirst": {
+		"prefix": "downgradeThirst",
+		"body": [
+			"vRP.DowngradeThirst(Passport, ${1:amount})"
+		],
+		"description": "increase thirst amount"
+	}
+}

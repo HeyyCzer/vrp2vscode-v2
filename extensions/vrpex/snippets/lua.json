@@ -1,0 +1,614 @@
+{
+	"Default Manifest": {
+		"prefix": "defaultManifest",
+		"body": [
+			"fx_version \"cerulean\"",
+			"game \"gta5\"",
+			"",
+			"shared_script \"@vrp/lib/utils.lua\"",
+			"",
+			"client_scripts {",
+			"\t\"src/client.lua\"",
+			"}",
+			"",
+			"server_scripts {",
+			"\t\"src/server.lua\",",
+			"}"
+		],
+		"description": "Default Manifest"
+	},
+	"Default Manifest w/ NUI": {
+		"prefix": "defaultManifestNUI",
+		"body": [
+			"fx_version \"cerulean\"",
+			"game \"gta5\"",
+			"",
+			"files {",
+			"\t\"src/nui/**\",",
+			"}",
+			"",
+			"ui_page \"src/nui/index.html\"",
+			"",
+			"",
+			"shared_script \"@vrp/lib/utils.lua\"",
+			"",
+			"client_scripts {",
+			"\t\"src/client.lua\"",
+			"}",
+			"",
+			"server_scripts {",
+			"\t\"src/server.lua\",",
+			"}"
+		],
+		"description": "Default Manifest w/ NUI"
+	},
+
+
+	"Default Client Template #01": {
+		"prefix": "defaultClient1",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"",
+			"vSERVER = Tunnel.getInterface(GetCurrentResourceName())"
+		],
+		"description": "Default vrp client script template"
+	},
+	"Default Client Template #02": {
+		"prefix": "defaultClient2",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"",
+			"src = {}",
+			"Tunnel.bindInterface(GetCurrentResourceName(), src)",
+			"vSERVER = Tunnel.getInterface(GetCurrentResourceName())"
+		],
+		"description": "Default vrp client script template"
+	},
+
+	"Default Server Template #01": {
+		"prefix": "defaultServer1",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"vRPclient = Tunnel.getInterface(\"vRP\")",
+			"",
+			"src = {}",
+			"Tunnel.bindInterface(GetCurrentResourceName(), src)"
+		],
+		"description": "Default vrp server script template"
+	},
+	"Default Server Template #02": {
+		"prefix": "defaultServer2",
+		"body": [
+			"local Tunnel = module(\"vrp\",\"lib/Tunnel\")",
+			"local Proxy = module(\"vrp\",\"lib/Proxy\")",
+			"vRP = Proxy.getInterface(\"vRP\")",
+			"vRPclient = Tunnel.getInterface(\"vRP\")",
+			"",
+			"src = {}",
+			"Tunnel.bindInterface(GetCurrentResourceName(), src)",
+			"vCLIENT = Tunnel.getInterface(GetCurrentResourceName())"
+		],
+		"description": "Default vrp server script template"
+	},
+
+
+
+	"Get ID by source": {
+		"prefix": "getUserId",
+		"body": [
+			"vRP.getUserId(source)"
+		],
+		"description": "Get and return user identifier"
+	},
+	"Get inventory item amount": {
+		"prefix": "getInventoryItemAmount",
+		"body": [
+			"vRP.getInventoryItemAmount(user_id, \"${1:itemName}\")"
+		],
+		"description": "Get and return amount of an inventory item"
+	},
+	"Get source by ID": {
+		"prefix": "getUserSource",
+		"body": [
+			"vRP.getUserSource(user_id)"
+		],
+		"description": "Get and return user source"
+	},
+	"Client Default Loop Thread": {
+		"prefix": "defaultThreadLoop",
+		"body": [
+			"Citizen.CreateThread(function()",
+			"\twhile true do",
+			"\t\tCitizen.Wait(${1:time})",
+			"\tend",
+			"end)"
+		],
+		"description": "Default Thread Client-Side Optimized"
+	},
+	"Client Default Optimized Thread": {
+		"prefix": "defaultThreadOptimized",
+		"body": [
+			"Citizen.CreateThread(function()",
+			"\twhile true do",
+			"\t\tlocal idle = ${1:defaultTime}",
+			"\t\tCitizen.Wait(idle)",
+			"\tend",
+			"end)"
+		],
+		"description": "Default Thread Client-Side Optimized"
+	},
+	"Client Default Thread": {
+		"prefix": "defaultThread",
+		"body": [
+			"Citizen.CreateThread(function()",
+			
+			
+			"end)"
+		],
+		"description": "Default Thread Client-Side"
+	},
+	"Default Client Command": {
+		"prefix": "defaultCommandC",
+		"body": [
+			"RegisterCommand(\"${1:commandName}\", function(_, args, rawCommand)", 
+			"\t${2:code}",
+			"end)"
+		],
+		"description": "Default Server Command"
+	},
+	"Default Server Command": {
+		"prefix": "defaultCommandS",
+		"body": [
+			"RegisterCommand(\"${1:commandName}\", function(source, args, rawCommand)", 
+			"\tlocal source = source",
+			"\tlocal user_id = vRP.getUserId(source)",
+			"\t",
+			"\t${2:code}",
+			"end)"
+		],
+		"description": "Default Server Command"
+	},
+
+	"Notify - Server-side": {
+		"prefix": "NotifyS",
+		"body": [
+			"TriggerClientEvent(\"Notify\",source,\"${1:type}\",\"${2:message}\")"
+		],
+		"description": "Event to show notifications on client"
+	},
+	"Notify - Client-side": {
+		"prefix": "NotifyC",
+		"body": [
+			"TriggerEvent(\"Notify\",\"${1:type}\",\"${2:message}\")"
+		],
+		"description": "Event to show notifications"
+	},
+
+
+	"Webhook": {
+		"prefix": "sendWebhook",
+		"body": [
+			"PerformHttpRequest(\"${1:url}\", function(err, text, headers) end, 'POST', json.encode({",
+			"\tembeds = {",
+			"\t\t{",
+			"\t\t\ttitle = \"Webhook Example\",",
+			"\t\t\tfields = {",
+			"\t\t\t\t{",
+			"\t\t\t\t\tname = \"Campo #01\",", 
+			"\t\t\t\t\tvalue = \"Valor do campo #01\"",
+			"\t\t\t\t},",
+			"\t\t\t\t{",
+			"\t\t\t\t\tname = \"Campo #02\",", 
+			"\t\t\t\t\tvalue = \"Valor do campo #02\"",
+			"\t\t\t\t},",
+			"\t\t\t},",
+			"\t\t\tfooter = {",
+			"\t\t\t\ttext = os.date('%d/%m/%Y | %H:%M:%S')",
+			"\t\t\t},", 
+			"\t\t\tcolor = 65280",
+			"\t\t}",
+			"\t}",
+			"}), {[\"Content-Type\"] = \"application/json\"})"
+		],
+		"description": "Event to show notifications on client"
+	},
+
+
+	"getUserIdentity": {
+		"prefix": "getUserIdentity",
+		"body": [
+			"vRP.getUserIdentity(user_id)"
+		],
+		"description": "Get and return user identity (array)"
+	},
+	"Send prompt": {
+		"prefix": "prompt",
+		"body": [
+			"vRP.prompt(source, '${1:description}', '${2:defaultInput}')"
+		],
+		"description": "Send prompt to source"
+	},
+	"Send request": {
+		"prefix": "request",
+		"body": [
+			"vRP.request(source, '${1:description}', ${2:requestTime}, clb)"
+		],
+		"description": "Send request to source"
+	},
+	"Get user data table": {
+		"prefix": "getUserDataTable",
+		"body": [
+			"vRP.getUserDataTable(user_id)"
+		],
+		"description": "Return user data table"
+	},
+	"Get users": {
+	"prefix": "getUsers",
+		"body": [
+			"vRP.getUsers()"
+		],
+		"description": "Return users on server table"
+	},
+	"Get spawns": {
+		"prefix": "getSpawns",
+		"body": [
+			"vRP.getSpawns(user_id)"
+		],
+		"description": "Return the player spawn count (0 = not spawned, 1 = first spawn, ...)"
+	},
+	"Set user data": {
+		"prefix": "setUData",
+		"body": [
+			"vRP.setUData(user_id, \"${1:dataKey}\", value)"
+		],
+		"description": "Set user data"
+	},
+	"Get user data": {
+		"prefix": "getUData",
+		"body": [
+			"vRP.getUData(user_id, \"${1:dataKey}\")"
+		],
+		"description": "Get user data (textual data)"
+	},
+	"Get user server data": {
+		"prefix": "getSData",
+		"body": [
+			"vRP.getSData(\"${1:dataKey}\")"
+		],
+		"description": "Get user server data (textual data)"
+	},
+	"Set user server data": {
+		"prefix": "setSData",
+		"body": [
+			"vRP.setSData(\"${1:dataKey}\", value)"
+		],
+		"description": "Set user server data"
+	},
+	"teleport": {
+		"prefix": "teleport",
+		"body": [
+			"vRPclient._teleport(source, x, y, z)"
+		],
+		"description": "teleport the player to the specified coordinates"
+	},
+	"getPosition": {
+		"prefix": "getPosition",
+		"body": [
+			"vRPclient.getPosition(source)"
+		],
+		"description": "get the player position"
+	},
+	"getSpeed": {
+		"prefix": "getSpeed",
+		"body": [
+			"vRPclient.getSpeed(source)"
+		],
+		"description": "get the player speed"
+	},
+	"isInside": {
+		"prefix": "isInside",
+		"body": [
+			"vRPclient.isInside(source)"
+		],
+		"description": "return false if in exterior, true if inside a building"
+	},
+	"notifyPicture": {
+		"prefix": "notifyPicture",
+		"body": [
+			"vRPclient._notifyPicture(source, picture, icon_type, title, int, message)"
+		],
+		"description": "notify the player with picture"
+	},
+	"playScreenEffect": {
+		"prefix": "playScreenEffect",
+		"body": [
+			"vRPclient._playScreenEffect(source, name, duration)"
+		],
+		"description": "play a screen effect"
+	},
+	"stopScreenEffect": {
+		"prefix": "stopScreenEffect",
+		"body": [
+			"vRPclient._stopScreenEffect(source, name)"
+		],
+		"description": "stop a screen effect"
+	},
+	"getNearestPlayers": {
+		"prefix": "getNearestPlayers",
+		"body": [
+			"vRPclient.getNearestPlayers(source, ${1:radius})"
+		],
+		"description": "get nearest players (inside the radius)"
+	},
+	"getNearestPlayer": {
+		"prefix": "getNearestPlayer",
+		"body": [
+			"vRPclient.getNearestPlayer(source, ${1:radius})"
+		],
+		"description": "get nearest player (inside the radius)"
+	},
+	"playAnim": {
+		"prefix": "playAnim",
+		"body": [
+			"vRPclient._playAnim(source, upper, seq, looping)"
+		],
+		"description": "play animation (new version)"
+	},
+	"stopAnim": {
+		"prefix": "stopAnim",
+		"body": [
+			"vRPclient._stopAnim(source, upper)"
+		],
+		"description": "stop animation (new version)"
+	},
+	"playSound": {
+		"prefix": "playSound",
+		"body": [
+			"vRP.playSound(source,dict,name)"
+		],
+		"description": "play sound"
+	},
+	"getGroupTitle": {
+		"prefix": "getGroupTitle",
+		"body": [
+			"vRP.getGroupTitle(group)"
+		],
+		"description": "return group title"
+	},
+	"addUserGroup": {
+		"prefix": "addUserGroup",
+		"body": [
+			"vRP.addUserGroup(user_id, \"${1:groupName}\")"
+		],
+		"description": "add a group to a connected user"
+	},
+	"removeUserGroup": {
+		"prefix": "removeUserGroup",
+		"body": [
+			"vRP.removeUserGroup(user_id, \"${1:groupName}\")"
+		],
+		"description": "remove a group from a connected user"
+	},
+	"hasGroup": {
+		"prefix": "hasGroup",
+		"body": [
+			"vRP.hasGroup(user_id, \"${1:groupName}\")"
+		],
+		"description": "check if the user has a specific group"
+	},
+	"hasPermission": {
+		"prefix": "hasPermission",
+		"body": [
+			"vRP.hasPermission(user_id, \"${1:permission}\")"
+		],
+		"description": "check if the user has a specific permission"
+	},
+	"hasPermissions": {
+		"prefix": "hasPermissions",
+		"body": [
+			"vRP.hasPermissions(user_id, perms)"
+		],
+		"description": "check if the user has a specific list of permissions (all of them)"
+	},
+	"getUserGroupByType": {
+		"prefix": "getUserGroupByType",
+		"body": [
+			"vRP.getUserGroupByType(user_id, \"${1:groupType}\")"
+		],
+		"description": "get user group by group type"
+	},
+	
+	"getUsersByGroup": {
+		"prefix": "getUsersByGroup",
+		"body": [
+			"vRP.getUsersByGroup(group)"
+		],
+		"description": "return list of connected users by group"
+	},
+	"getUsersByPermission": {
+		"prefix": "getUsersByPermission",
+		"body": [
+			"vRP.getUsersByPermission(perm)"
+		],
+		"description": "return list of connected users by permission"
+	},
+	"getHunger": {
+		"prefix": "getHunger",
+		"body": [
+			"vRP.getHunger(user_id)"
+		],
+		"description": "return hunger (0-100) "
+	},
+	"getThirst": {
+		"prefix": "getThirst",
+		"body": [
+			"vRP.getThirst(user_id)"
+		],
+		"description": "return thirst (0-100)"
+	},
+	"setHunger": {
+		"prefix": "setHunger",
+		"body": [
+			"vRP.setHunger(user_id,value)"
+		],
+		"description": "set hunger"
+	},
+	"setThirst": {
+		"prefix": "setThirst",
+		"body": [
+			"vRP.setThirst(user_id,value)"
+		],
+		"description": "set thirst"
+	},
+	"varyHunger": {
+		"prefix": "varyHunger",
+		"body": [
+			"vRP.varyHunger(user_id,variation)"
+		],
+		"description": "vary hunger value by variation amount (+ to add hunger, - to remove hunger)"
+	},
+	"varyThirst": {
+		"prefix": "varyThirst",
+		"body": [
+			"vRP.varyThirst(user_id,variation)"
+		],
+		"description": "same as vary hunger"
+	},
+	"varyHealth": {
+		"prefix": "varyHealth",
+		"body": [
+			"vRPclient._varyHealth(source, variation)"
+		],
+		"description": "vary health"
+	},
+	"getHealth": {
+		"prefix": "getHealth",
+		"body": [
+			"vRPclient.getHealth(source)"
+		],
+		"description": "get player health"
+	},
+	"setHealth": {
+		"prefix": "setHealth",
+		"body": [
+			"vRPclient._setHealth(source, health)"
+		],
+		"description": "set player health"
+	},
+	"isInComa": {
+		"prefix": "isInComa",
+		"body": [
+			"vRPclient.isInComa(source)"
+		],
+		"description": "Check if player is down/death"
+	},
+	"giveInventoryItem":{
+		"prefix": "giveInventoryItem",
+		"body": [
+			"vRP.giveInventoryItem(user_id, \"${1:itemName}\", ${2:amount})"
+		]
+	},
+	"tryGetInventoryItem":{
+		"prefix": "tryGetInventoryItem",
+		"body": [
+			"vRP.tryGetInventoryItem(user_id, \"${1:itemName}\", ${2:amount})"
+		]
+	},
+	"getWeapons": {
+		"prefix": "getWeapons",
+		"body": [
+			"vRPclient.getWeapons(source)"
+		],
+		"description": "get player weapons data"
+	},
+	"giveWeapons": {
+		"prefix": "giveWeapons",
+		"body": [
+			"vRPclient._giveWeapons(source,weapons,clear_before)"
+		],
+		"description": "give weapons"
+	},
+	"getCustomization": {
+		"prefix": "getCustomization",
+		"body": [
+			"vRPclient.getCustomization(source)"
+		],
+		"description": "get player apparence customization data"
+	},
+	"setCustomization": {
+		"prefix": "setCustomization",
+		"body": [
+			"vRPclient._setCustomization(source,customization_data)"
+		],
+		"description": "set player apparence"
+	},
+	"setArmour": {
+		"prefix": "setArmour",
+		"body": [
+			"vRPclient._setArmour(source,amount)"
+		],
+		"description": "set player armour (0-100)"
+	},
+	"getMoney": {
+		"prefix": "getMoney",
+		"body": [
+			"vRP.getMoney(user_id)"
+		],
+		"description": "get money in wallet"
+	},
+	"setMoney": {
+		"prefix": "setMoney",
+		"body": [
+			"vRP.setMoney(user_id,value)"
+		],
+		"description": "set money in wallet"
+	},
+	"giveMoney": {
+		"prefix": "giveMoney",
+		"body": [
+			"vRP.giveMoney(user_id,amount)"
+		],
+		"description": "Give money to wallet"
+	},
+	"tryPayment": {
+		"prefix": "tryPayment",
+		"body": [
+			"vRP.tryPayment(user_id,amount)"
+		],
+		"description": "try a payment (wallet only)"
+	},
+	"tryFullPayment": {
+		"prefix": "tryFullPayment",
+		"body": [
+			"vRP.tryFullPayment(user_id,amount)"
+		],
+		"description": "try full payment (wallet + bank to complete payment)"
+	},
+	"giveBankMoney": {
+		"prefix": "giveBankMoney",
+		"body": [
+			"vRP.giveBankMoney(user_id,amount)"
+		],
+		"description": "Add money to player bank"
+	},
+	"getBankMoney": {
+		"prefix": "getBankMoney",
+		"body": [
+			"vRP.getBankMoney(user_id)"
+		],
+		"description": "Get bank money"
+	},
+	"setBankMoney": {
+		"prefix": "setBankMoney",
+		"body": [
+			"vRP.setBankMoney(user_id,value)"
+		],
+		"description": "Set bank money"
+	}
+}
