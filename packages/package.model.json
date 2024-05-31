@@ -6,8 +6,9 @@
 	"version": "{version}",
 	"repository": "git@github.com:HeyyCzer/vrp2vscode-v2.git",
 	"scripts": {
-		"publish": "vsce package && vsce publish",
-		"pre-publish": "vsce package && vsce publish --pre-release"
+		"package": "vsce package",
+		"publish": "pnpm package && vsce publish",
+		"pre-publish": "pnpm package && vsce publish --pre-release"
 	},
 	"galleryBanner": {
 		"color": "#121212",

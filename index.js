@@ -91,9 +91,18 @@ async function buildExtension(extension) {
 			continue;
 		}
 
+		let snippetContent = snippetData.data.content;
+		let variableIndex = 1;
+		for (const variable of snippetData.data.variables) {
+			const variableName = variable.index;
+			let variableValue = `\${${variableIndex}:${variable.default_value ?? variable.index}}`;
+			snippetContent = snippetContent.replace(new RegExp(`{${variableName}}`, 'g'), variableValue);
+			variableIndex++;
+		}
+
 		content[snippetData.data.summon_name] = {
-			prefix: snippetData.data.prefix,
-			body: snippetData.data.body,
+			prefix: snippetData.data.summon_name,
+			body: snippetContent.replace(/^(\s{4})/gm, "\t").replace(/\t/gm, "\t").split('\n'),
 			description: snippetData.data.description,
 		};
 
@@ -109,6 +118,7 @@ async function buildExtension(extension) {
 	manifest = manifest.replace(/{name}/g, extension.marketplace_id);
 	manifest = manifest.replace(/{display_name}/g, extension.display_name);
 	manifest = manifest.replace(/{description}/g, extension.marketplace_description);
+	manifest = manifest.replace(/{version}/g, extension.version);
 	fs.writeFileSync(path.join(distDir, 'package.json'), manifest, 'utf8');
 	spinner.succeed("Written package.json");
 
