@@ -5,9 +5,7 @@ Bem-vindo à esse repositório.
 ## Estruturação
 
 Os arquivos estão separados da seguinte forma:
-* `common` são os arquivos compartilhados entre todas as extensões
-* `exporter` é o script responsável por gerar o README de cada extensão, colocando o nome das funções disponíveis
-* `variations` são as extensões, cada variação delas, para cada base diferente
+* `package` são as extensões, cada variação delas, para cada base diferente
 
 Veja [todas as minhas extensões](https://marketplace.visualstudio.com/publishers/heyyczer)
 

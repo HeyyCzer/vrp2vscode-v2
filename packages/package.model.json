@@ -1,10 +1,10 @@
 {
-	"name": "fivem-vrp",
+	"name": "{name}",
 	"publisher": "HeyyCzer",
-	"displayName": "FiveM vRP",
-	"description": "[BR] Snippets de código p/ vRP",
-	"version": "1.0.0",
-	"repository": "git@github.com:HeyyCzer/vrp2vscode.git",
+	"displayName": "{display_name}",
+	"description": "{description}",
+	"version": "{version}",
+	"repository": "git@github.com:HeyyCzer/vrp2vscode-v2.git",
 	"scripts": {
 		"publish": "vsce package && vsce publish",
 		"pre-publish": "vsce package && vsce publish --pre-release"

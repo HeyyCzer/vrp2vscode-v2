@@ -1,0 +1,11 @@
+node_modules/
+dist/
+
+.env
+
+*.rar
+*.zip
+*.tar.gz
+*.7z
+*.vsix
+*.log
