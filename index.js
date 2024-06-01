@@ -93,15 +93,15 @@ async function buildExtension(extension) {
 
 		let snippetContent = snippetData.data.content;
 		let variableIndex = 1;
-		for (const variable of snippetData.data.variables) {
+		for (const variable of snippetData.data.variables || []) {
 			const variableName = variable.index;
 			let variableValue = `\${${variableIndex}:${variable.default_value ?? variable.index}}`;
 			snippetContent = snippetContent.replace(new RegExp(`{${variableName}}`, 'g'), variableValue);
 			variableIndex++;
 		}
 
-		content[snippetData.data.summon_name] = {
-			prefix: snippetData.data.summon_name,
+		content[snippetData.data.id] = {
+			prefix: snippetData.data.prefixes,
 			body: snippetContent.replace(/^(\s{4})/gm, "\t").replace(/\t/gm, "\t").split('\n'),
 			description: snippetData.data.description,
 		};
