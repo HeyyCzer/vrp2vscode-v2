@@ -4,6 +4,7 @@
 name: Build and update all extensions
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
 
