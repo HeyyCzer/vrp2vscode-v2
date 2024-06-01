@@ -15,9 +15,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+    runs-on: [self-hosted, linux]
     steps:
     - uses: actions/checkout@v4
     - name: Install Node.js
