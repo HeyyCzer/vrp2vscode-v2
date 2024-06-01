@@ -113,6 +113,10 @@ async function buildExtension(extension) {
 	fs.writeFileSync(path.join(distDir, 'snippets/lua.json'), JSON.stringify(content, null, 4), 'utf8');
 	spinner.succeed("Written snippets to file");
 
+	spinner.start("Writing README.md...");
+	fs.writeFileSync(path.join(distDir, 'README.md'), extension.description, 'utf8');
+	spinner.succeed("Written README.md");
+
 	spinner.start("Writing package.json...");
 	let manifest = fs.readFileSync(path.join(distDir, 'package.model.json'), 'utf8');
 	manifest = manifest.replace(/{name}/g, extension.marketplace_id);
