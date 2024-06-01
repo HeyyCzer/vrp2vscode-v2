@@ -46,7 +46,7 @@ jobs:
       run: pnpm install
 
     - name: Build extensions
-      run: pnpm build -- --extensions all
+      run: pnpm build --extensions all
     
     - name: Publish extensions
       working-directory: ./dist
