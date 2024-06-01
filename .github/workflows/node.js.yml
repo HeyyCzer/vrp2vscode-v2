@@ -50,4 +50,4 @@ jobs:
     
     - name: Publish extensions
       working-directory: ./dist
-      run: pnpm publish
+      run: pnpm run publish
