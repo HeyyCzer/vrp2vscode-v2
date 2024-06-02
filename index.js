@@ -114,7 +114,12 @@ async function buildExtension(extension) {
 	spinner.succeed("Written snippets to file");
 
 	spinner.start("Writing README.md...");
-	fs.writeFileSync(path.join(distDir, 'README.md'), extension.description, 'utf8');
+
+	let description = extension.description.replace("{snippets}", Object.values(content).map((snippet) => {
+		return `### ${snippet.prefix.join(", ")}\n${snippet.description}\n\`\`\`lua\n${snippet.body.join('\n')}\n\`\`\`\n`;
+	}).join("\n"));
+
+	fs.writeFileSync(path.join(distDir, 'README.md'), description, 'utf8');
 	spinner.succeed("Written README.md");
 
 	spinner.start("Writing package.json...");
