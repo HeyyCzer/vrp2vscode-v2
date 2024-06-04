@@ -48,4 +48,5 @@ jobs:
     
     - name: Publish extensions
       working-directory: ./dist
+      continue-on-error: true
       run: pnpm run publish
