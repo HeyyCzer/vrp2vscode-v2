@@ -5,8 +5,8 @@ name: Build and update all extensions
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
+  #schedule:
+   #- cron: "0 0 * * *"
 
 env:
   VSCE_PAT: ${{ secrets.VSCE_PAT }}
