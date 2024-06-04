@@ -1,8 +1,8 @@
 {
-	"name": "{name}",
+	"name": "{marketplace_id}",
 	"publisher": "HeyyCzer",
 	"displayName": "{display_name}",
-	"description": "{description}",
+	"description": "{marketplace_description}",
 	"version": "{version}",
 	"repository": "git@github.com:HeyyCzer/vrp2vscode-v2.git",
 	"scripts": {

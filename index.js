@@ -3,6 +3,7 @@ dotenv.config();
 
 const minimist = require('minimist');
 const { directusAPI } = require('./utils/http.js');
+const { parseVariables } = require('./utils/variables.js');
 const { globSync } = require('glob');
 const fs = require('fs');
 const path = require('path');
@@ -119,19 +120,22 @@ async function buildExtension(extension) {
 
 	spinner.start("Writing README.md...");
 
-	let description = extension.description.replace("{snippets}", Object.values(content).map((snippet) => {
-		return `### ${snippet.prefix.join(", ")}\n${snippet.description}\n\`\`\`lua\n${snippet.body.join('\n')}\n\`\`\`\n`;
-	}).join("\n"));
+	const variables = {
+		...extension,
+		snippetsCount: Object.values(content).length,
+		snippets: Object.values(content).map((snippet) => {
+			return `### ${snippet.prefix.join(", ")}\n${snippet.description}\n\`\`\`lua\n${snippet.body.join('\n')}\n\`\`\`\n`;
+		}).join("\n"),
+	}
+
+	let description = parseVariables(extension.description, variables);
 
 	fs.writeFileSync(path.join(distDir, 'README.md'), description, 'utf8');
 	spinner.succeed("Written README.md");
 
 	spinner.start("Writing package.json...");
-	let manifest = fs.readFileSync(path.join(distDir, 'package.model.json'), 'utf8');
-	manifest = manifest.replace(/{name}/g, extension.marketplace_id);
-	manifest = manifest.replace(/{display_name}/g, extension.display_name);
-	manifest = manifest.replace(/{description}/g, extension.marketplace_description);
-	manifest = manifest.replace(/{version}/g, extension.version);
+	const manifestFileContent = fs.readFileSync(path.join(distDir, 'package.model.json'), 'utf8');
+	const manifest = parseVariables(manifestFileContent, variables);
 	fs.writeFileSync(path.join(distDir, 'package.json'), manifest, 'utf8');
 	spinner.succeed("Written package.json");
 
