@@ -30,7 +30,10 @@ if (!buildAll) {
 async function fetchExtensions() {
 	const { data } = await directusAPI.get("/items/vrp2vscode_extensions", {
 		params: {
-			filter: buildAll ? undefined : conditions,
+			filter: {
+				status: "published",
+				...(buildAll ? {} : conditions)
+			},
 		}
 	});
 
@@ -86,8 +89,9 @@ async function buildExtension(extension) {
 		}
 
 		const snippetId = data.data.vrp2vscode_snippets_id;
-		const { data: snippetData } = await directusAPI.get(`/items/vrp2vscode_snippets/${snippetId}`);
+		const { data: snippetData } = await directusAPI.get(`/items/vrp2vscode_snippets/${snippetId}?filter[status][_eq]=published`);
 		if (!snippetData.data) {
+			spinner.warn("Snippet not found or not published!");
 			continue;
 		}
 
